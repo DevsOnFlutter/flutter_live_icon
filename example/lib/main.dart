@@ -15,8 +15,12 @@ class _MyAppState extends State<MyApp> {
   LiveIcon liveIcon = LiveIcon();
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
+    initialize();
+  }
+
+  void initialize() async {
     await liveIcon.initialize(icons: [
       const LiveIconData(
         iconName: "darkTheme",
@@ -37,7 +41,12 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text(''),
+          child: ElevatedButton(
+            child: Text('Initialize'),
+            onPressed: () {
+              initialize();
+            },
+          ),
         ),
       ),
     );
