@@ -13,7 +13,7 @@ import io.flutter.plugin.common.MethodChannel;
 
 public class LiveIconPlugin implements FlutterPlugin, ActivityAware {
   private static final String CHANNEL_ID = "com.hackthedeveloper.live_icon";
-  private static final String TAG = "[Flutter Shortcuts]";
+  private static final String TAG = "[flutter_live_icon]";
 
   public static String getTAG() {
     return TAG;
