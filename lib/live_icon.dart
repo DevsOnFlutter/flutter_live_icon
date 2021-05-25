@@ -1,14 +1,28 @@
-
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import './src/helper/helper.dart';
+
+export './src/helper/helper.dart';
 
 class LiveIcon {
-  static const MethodChannel _channel =
-      const MethodChannel('live_icon');
+  static const MethodChannel _channel = const MethodChannel('live_icon');
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
+  Future<void> initialize({List<LiveIconData> icons}) async {
+    List<Map<String, String>> iconData = _serializeLiveIconData(icons);
+    await _channel.invokeMethod("initialize", iconData);
+  }
+
+  List<Map<String, String>> _serializeLiveIconData(List<LiveIconData> icons) {
+    List<Map<String, String>> iconData;
+    for (LiveIconData icon in icons) {
+      iconData.add(
+        <String, String>{
+          'iconName': icon.iconName,
+          'className': icon.className,
+        },
+      );
+    }
+    return iconData;
   }
 }
