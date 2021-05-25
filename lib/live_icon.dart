@@ -15,15 +15,11 @@ class LiveIcon {
   }
 
   List<Map<String, String>> _serializeLiveIconData(List<LiveIconData> icons) {
-    List<Map<String, String>> iconData;
-    for (LiveIconData icon in icons) {
-      iconData.add(
-        <String, String>{
-          'iconName': icon.iconName,
-          'className': icon.className,
-        },
-      );
-    }
-    return iconData;
+    return icons
+        .map((icon) => <String, String>{
+              'iconName': icon.iconName,
+              'className': icon.className,
+            })
+        .toList();
   }
 }
