@@ -15,9 +15,9 @@ class _MyAppState extends State<MyApp> {
   LiveIcon liveIcon = LiveIcon();
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
-    liveIcon.initialize(icons: [
+    await liveIcon.initialize(icons: [
       const LiveIconData(
         iconName: "darkTheme",
         className: "DarkTheme",
