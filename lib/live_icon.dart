@@ -14,6 +14,6 @@ class LiveIcon {
       'iconName': icon.iconName,
       'className': icon.className,
     };
-    await _channel.invokeMethod("initialize", [iconData]);
+    await _channel.invokeMethod("switchTo", [iconData]);
   }
 }

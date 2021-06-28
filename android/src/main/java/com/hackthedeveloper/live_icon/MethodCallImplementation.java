@@ -1,7 +1,10 @@
 package com.hackthedeveloper.live_icon;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
@@ -37,8 +40,8 @@ public class MethodCallImplementation implements MethodChannel.MethodCallHandler
     public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
 
         switch (call.method) {
-            case "initialize":
-                initialize(call);
+            case "switchTo":
+                switchTo(call);
                 break;
             default:
                 result.notImplemented();
@@ -46,50 +49,23 @@ public class MethodCallImplementation implements MethodChannel.MethodCallHandler
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void initialize(MethodCall call) {
+    private void switchTo(MethodCall call) {
         List<Map<String, String>> args = call.arguments();
-        final int numberOfIcons = args.size();
-        for(Map<String,String> arg : args ){
-            Log.d(TAG, "=====================>initialize: ");
-            String className = arg.get("className");
-            File file = new File(className+".java");
-            try {
-                Log.d(TAG, "=====================>1st try: ");
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (file.exists()) {
-                // Returning the file name
-                System.out.println("File name: " + file.getName());
+        String iconName = args.get(0).get("iconName");
+        String className = args.get(0).get("className");
+        PackageManager pm = activity.getPackageManager();
 
-                // Returning the path of the file
-                System.out.println("Absolute path: " + file.getAbsolutePath());
 
-                // Displaying whether the file is writable
-                System.out.println("Writeable: " + file.canWrite());
+        String packageName = activity.getPackageName();
+        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+        String mainActivityClass = launchIntent.getComponent().getClassName();
 
-                // Displaying whether the file is readable or not
-                System.out.println("Readable " + file.canRead());
+        ComponentName darkThemeCN = new ComponentName(mainActivityClass, packageName+"."+className);
+        ComponentName lightThemeCN = new ComponentName(mainActivityClass, packageName+"."+"LightTheme");
 
-                // Returning the length of the file in bytes
-                System.out.println("File size in bytes " + file.length());
-            } else {
-                System.out.println("The file does not exist.");
-            }
-            try {
-                Log.d(TAG, "=====================>2nd try: ");
-                FileWriter writeFile = new FileWriter(className+".java");
-                writeFile.write("package \"com.hackthedeveloper.live_icon\";");
-                writeFile.write(System.lineSeparator());
-                writeFile.write("class "+className+"{}");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        }
-
+        pm.setComponentEnabledSetting(lightThemeCN,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,PackageManager.DONT_KILL_APP);
+        pm.setComponentEnabledSetting(darkThemeCN,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP);
     }
+}
 
 
