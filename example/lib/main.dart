@@ -17,20 +17,15 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    initialize();
   }
 
-  void initialize() async {
-    await liveIcon.initialize(icons: [
-      const LiveIconData(
+  void switchAppIcon() async {
+    await liveIcon.switchTo(
+      icon: const LiveIconData(
         iconName: "darkTheme",
         className: "DarkTheme",
       ),
-      const LiveIconData(
-        iconName: "lightTheme",
-        className: "LightTheme",
-      ),
-    ]);
+    );
   }
 
   @override
@@ -42,9 +37,9 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Center(
           child: ElevatedButton(
-            child: Text('Initialize'),
+            child: Text('switch To DarkThemeIcon'),
             onPressed: () {
-              initialize();
+              switchAppIcon();
             },
           ),
         ),

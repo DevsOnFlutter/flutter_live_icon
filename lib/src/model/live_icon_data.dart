@@ -1,7 +1,7 @@
 class LiveIconData {
   const LiveIconData({
-    this.iconName,
-    this.className,
+    required this.iconName,
+    required this.className,
   });
 
   final String iconName;
