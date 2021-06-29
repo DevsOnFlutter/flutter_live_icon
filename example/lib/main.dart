@@ -16,15 +16,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    LiveIcon.initialize(
+      classNames: ['MainActivity', 'DarkTheme', 'LightTheme'],
+    );
     super.initState();
   }
 
   void switchAppIcon() async {
-    await liveIcon.switchTo(
-      icon: const LiveIconData(
-        iconName: "darkTheme",
-        className: "DarkTheme",
-      ),
+    await liveIcon.switchIconTo(
+      className: 'LightTheme',
     );
   }
 

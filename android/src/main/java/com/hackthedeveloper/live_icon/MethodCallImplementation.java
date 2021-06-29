@@ -25,6 +25,7 @@ public class MethodCallImplementation implements MethodChannel.MethodCallHandler
     private final Context context;
     private Activity activity;
 
+    private static List<String> classNames = null;
 
     MethodCallImplementation(Context context, Activity activity) {
         this.context = context;
@@ -40,42 +41,49 @@ public class MethodCallImplementation implements MethodChannel.MethodCallHandler
     public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
 
         switch (call.method) {
-            case "switchTo":
-                switchTo(call);
+            case "initialize":
+            {
+                classNames = call.arguments();
                 break;
+            }
+            case "switchIconTo":
+            {
+                switchIconTo(call);
+                break;
+            }
             default:
                 result.notImplemented();
                 break;
         }
     }
 
-    private void switchTo(MethodCall call) {
-        List<Map<String, String>> args = call.arguments();
-        String iconName = args.get(0).get("iconName");
-        String className = args.get(0).get("className");
+    private void switchIconTo(MethodCall call) {
+        if(classNames == null || classNames.isEmpty()) {
+            Log.e(TAG,"Initialization Failed!");
+            Log.i(TAG,"List all the activity-alias class names in initialize()");
+            return;
+        }
+
+        List<String> args = call.arguments();
+        String className = args.get(0);
+
         PackageManager pm = activity.getPackageManager();
-
-
         String packageName = activity.getPackageName();
-//        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-//        String mainActivityClass = launchIntent.getComponent().getClassName();
+        int componentState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+        int i=0;
+        for(;i<classNames.size();i++) {
+            ComponentName cn = new ComponentName(packageName, packageName+"."+classNames.get(i));
+            if(className.equals(classNames.get(i))) {
+                componentState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+            }
+            pm.setComponentEnabledSetting(cn, componentState, PackageManager.DONT_KILL_APP);
+        }
 
-        ComponentName darkThemeCN = new ComponentName(packageName, packageName+"."+className);
-        ComponentName lightThemeCN = new ComponentName(packageName, packageName+"."+"LightTheme");
-        ComponentName mainThemeCN = new ComponentName(packageName, packageName+"."+"MainActivity");
-
-
-        pm.setComponentEnabledSetting(lightThemeCN,
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-        pm.setComponentEnabledSetting(mainThemeCN,
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-        pm.setComponentEnabledSetting(darkThemeCN,
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP);
-
-        Log.d(TAG,"DONE");
+        if(i>classNames.size()) {
+            Log.e(TAG,"class name "+className+" did not match in the initialized list.");
+            return;
+        }
+        Log.d(TAG,"Icon switched to "+className);
     }
 }
 

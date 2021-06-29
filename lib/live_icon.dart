@@ -1,19 +1,20 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:live_icon/src/helper/helper.dart';
-
-export 'package:live_icon/src/helper/helper.dart';
 
 class LiveIcon {
   static const MethodChannel _channel =
       const MethodChannel('com.hackthedeveloper.live_icon');
 
-  Future<void> switchTo({required LiveIconData icon}) async {
-    Map<String, String> iconData = {
-      'iconName': icon.iconName,
-      'className': icon.className,
-    };
-    await _channel.invokeMethod("switchTo", [iconData]);
+  /// [initialize] takes list of class names listed in AndroidManifest.xml's
+  /// activity-alias tag.
+  static Future<void> initialize({required List<String> classNames}) async {
+    await _channel.invokeMethod("initialize", classNames);
+  }
+
+  /// [switchIconTo] takes a class name (activity-alias android:name)
+  /// and switches the app icon to that activity-alias.
+  Future<void> switchIconTo({required String className}) async {
+    await _channel.invokeMethod("switchIconTo", [className]);
   }
 }
