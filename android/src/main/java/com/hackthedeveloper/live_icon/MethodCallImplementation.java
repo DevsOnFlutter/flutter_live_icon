@@ -57,14 +57,25 @@ public class MethodCallImplementation implements MethodChannel.MethodCallHandler
 
 
         String packageName = activity.getPackageName();
-        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-        String mainActivityClass = launchIntent.getComponent().getClassName();
+//        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+//        String mainActivityClass = launchIntent.getComponent().getClassName();
 
-        ComponentName darkThemeCN = new ComponentName(mainActivityClass, packageName+"."+className);
-        ComponentName lightThemeCN = new ComponentName(mainActivityClass, packageName+"."+"LightTheme");
+        ComponentName darkThemeCN = new ComponentName(packageName, packageName+"."+className);
+        ComponentName lightThemeCN = new ComponentName(packageName, packageName+"."+"LightTheme");
+        ComponentName mainThemeCN = new ComponentName(packageName, packageName+"."+"MainActivity");
 
-        pm.setComponentEnabledSetting(lightThemeCN,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,PackageManager.DONT_KILL_APP);
-        pm.setComponentEnabledSetting(darkThemeCN,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP);
+
+        pm.setComponentEnabledSetting(lightThemeCN,
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+        pm.setComponentEnabledSetting(mainThemeCN,
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+        pm.setComponentEnabledSetting(darkThemeCN,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        Log.d(TAG,"DONE");
     }
 }
 

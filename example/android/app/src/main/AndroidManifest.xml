@@ -35,7 +35,7 @@
 
         <!-- Live Icon Addition -->
         <activity-alias
-            android:name="DarkTheme"
+            android:name=".DarkTheme"
             android:enabled="false"
             android:icon="@mipmap/dark_theme"
             android:label="DarkThemeLabel"
@@ -47,7 +47,7 @@
         </activity-alias>
 
         <activity-alias
-            android:name="LightTheme"
+            android:name=".LightTheme"
             android:enabled="false"
             android:icon="@mipmap/light_theme"
             android:label="LightThemeLabel"
