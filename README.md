@@ -6,6 +6,10 @@
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/DevsOnFlutter/flutter_live_icon?style=social) ![GitHub forks](https://img.shields.io/github/forks/DevsOnFlutter/flutter_live_icon?style=social)
 
+##  Compatibility
+
+✅ &nbsp; Android </br>
+❌ &nbsp; iOS (active issue: [iOS support](https://github.com/DevsOnFlutter/flutter_live_icon/issues/3))
 
 ## Features
 
