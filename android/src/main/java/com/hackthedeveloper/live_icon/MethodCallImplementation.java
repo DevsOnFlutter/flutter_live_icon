@@ -76,6 +76,9 @@ public class MethodCallImplementation implements MethodChannel.MethodCallHandler
             if(className.equals(classNames.get(i))) {
                 componentState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
             }
+            else{
+                componentState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+            }
             pm.setComponentEnabledSetting(cn, componentState, PackageManager.DONT_KILL_APP);
         }
 
