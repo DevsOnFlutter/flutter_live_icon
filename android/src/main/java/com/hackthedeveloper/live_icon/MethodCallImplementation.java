@@ -69,10 +69,17 @@ public class MethodCallImplementation implements MethodChannel.MethodCallHandler
 
         PackageManager pm = activity.getPackageManager();
         String packageName = activity.getPackageName();
+        String mainClassName = activity.getClass().toString().split(" ")[1];
+        String realPackageName = "";
+        String[] tokens = mainClassName.split("\\.");
+        for(int j =0;j<tokens.length; j++){
+            if(j == tokens.length -1 ) break;
+            realPackageName += tokens[j] + ".";
+        }
         int componentState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
         int i=0;
         for(;i<classNames.size();i++) {
-            ComponentName cn = new ComponentName(packageName, packageName+"."+classNames.get(i));
+            ComponentName cn = new ComponentName(packageName, realPackageName+classNames.get(i));
             if(className.equals(classNames.get(i))) {
                 componentState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
             }
